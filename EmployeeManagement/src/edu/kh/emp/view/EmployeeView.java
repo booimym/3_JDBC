@@ -101,9 +101,12 @@ public class EmployeeView {
 		for(Map.Entry<String, Double> entry :map.entrySet()) {
 			
 			System.out.println("[직급명] :" + entry.getKey()+ ",[급여평균] :"+entry.getValue());
-		}
 		
+		}
+//		printSalary(map);
 	}
+	
+	
 
 
 
@@ -119,13 +122,23 @@ public class EmployeeView {
 //		Map<String, Integer> map = new HashMap<String,Integer>();
 		Map<String, Integer> map = dao.selectDeptTotalSalary();
 		
-		for(Map.Entry<String, Integer> entry :map.entrySet()) {
-			
-			System.out.println("[부서코드] :" + entry.getKey()+ ",[급여합] :"+entry.getValue());
-		}
+//		for(Map.Entry<String, Integer> entry :map.entrySet()) {
+//			
+//			System.out.println("[부서코드] :" + entry.getKey()+ ",[급여합] :"+entry.getValue());
+//		}
+		printSalary(map);
 		
 	}
 
+	
+	public void printSalary(Map<String, Integer> map) {
+		
+		for(Map.Entry<String, Integer> entry :map.entrySet()) {
+			
+			System.out.println( entry.getKey()+ " / "+entry.getValue());
+		}
+		
+	}
 
 
 
