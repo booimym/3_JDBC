@@ -123,5 +123,16 @@ public class TestService {
 		
 		return res; //insert 3회의 결과를 반환한다.
 	}
+
+
+	public int update(TestVO vo1) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		int result = dao.update(conn,vo1);
+		
+		
+		return result;
+	}
 	
 }
