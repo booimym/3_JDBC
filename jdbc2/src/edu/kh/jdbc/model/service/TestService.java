@@ -125,14 +125,24 @@ public class TestService {
 	}
 
 
-	public int update(TestVO vo1) throws SQLException {
+	public int update(TestVO vo3) throws SQLException {
 		
 		Connection conn = getConnection();
 		
-		int result = dao.update(conn,vo1);
+		int result = dao.update(conn,vo3);
+		
+		//트랜잭션 제어 처리
+				if(result > 0) commit(conn);
+				else rollback(conn);
+				
+				//2. 커넥션 반환(close)
+				close(conn);
+				
+				//결과 반환
+				return result;
 		
 		
-		return result;
+		
 	}
 	
 }

@@ -27,13 +27,22 @@ public class Run3 {
 		System.out.print("내용입력 : ");
 		String input3 = sc.next();
 		
-		TestVO vo1 = new TestVO(input1,input2,input3);
+		TestVO vo3 = new TestVO(input1,input2,input3);
 		
 		
 			try {
-				int result = service.update(vo1);
-			} catch (SQLException e) {
+				int result = service.update(vo3);
 				
+				if (result > 0) {
+					System.out.println("insert 성공");
+				} else {
+					System.out.println("insert 실패");
+					// insert 실패하는 경우
+					// 서브쿼리를 이용한 insert 수행 시...
+				}
+				
+			} catch (SQLException e) {
+				System.out.println("SQL 수행 중 오류 발생");
 				e.printStackTrace();
 			}
 		

@@ -174,7 +174,6 @@ public class EmployeeDAO {
 			stmt = conn.createStatement(); //statement는 connection내부를 왔다갔다 하니까
 										 //connection 이용해서 만듦.
 			
-			rs = stmt.executeQuery(sql); 
 			
 			//** 조회 결과가 최대 1행인 경우
 			//   불필요한 조건 검사를 줄이기 위해 while문이 아니라, if문 사용을 권장한다 **

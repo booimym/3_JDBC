@@ -88,23 +88,23 @@ public class TestDAO {
 		
 		return result;
 	}
-	public int update(Connection conn, TestVO vo1) throws SQLException {
+	public int update(Connection conn, TestVO vo3) throws SQLException {
 		
 		String sql = prop.getProperty("update");
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, vo1.getTestNo());
-			pstmt.setString(2, vo1.getTestTitle());
-			pstmt.setString(3, vo1.getTestContent());
+			pstmt.setInt(3, vo3.getTestNo());
+			pstmt.setString(1, vo3.getTestTitle());
+			pstmt.setString(2, vo3.getTestContent());
 			
 			result = pstmt.executeUpdate();
 		} finally {
 			close(pstmt);
 		}
 		
-		return 0;
+		return result ;
 	}
 
 }
