@@ -63,7 +63,7 @@ public class MainService {
 		return result;
 	}
 
-	/** 로그인 서비스
+	/** 1. 로그인 서비스
 	 * @param memberId
 	 * @param memberPw
 	 * @return
@@ -86,49 +86,6 @@ public class MainService {
 		
 		
 	
-	}
-
-	public List<Member> selectAll() {
-		
-		
-		
-		
-		return null;
-	}
-
-	public int updateMine(String memberId,String memberName, String memberGender) throws Exception {
-		
-		//1. Connection 생성하기
-		Connection conn = getConnection();
-		
-		//2. DAO 메서드 호출 후 결과 반환 받기
-		int result = dao.updateMine(conn,memberId,memberName,memberGender); 
-		
-		//3. 트랜잭션 제어 처리
-		if(result > 0 ) commit(conn);
-		else 			rollback(conn);
-		
-		close(conn);
-		
-		return result;
-		
-	}
-
-	public int updatePw(String memberId, String memberPw1) throws Exception{
-		
-				//1. Connection 생성하기
-				Connection conn = getConnection();
-				
-				//2. DAO 메서드 호출 후 결과 반환 받기
-				int result = dao.updateMine(conn,memberId, memberPw1); 
-				
-				//3. 트랜잭션 제어 처리
-				if(result > 0 ) commit(conn);
-				else 			rollback(conn);
-				
-				close(conn);
-				
-				return result;
 	}
 
 }

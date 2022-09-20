@@ -83,14 +83,45 @@ AND MEMBER_PW = 'pass01'
 AND SECESSION_FL = 'N'; 
 --(아이디/비번 일치하고) 탈퇴를 안 한 회원
 
+
+
+
+
+
+--2. 회원 목록 조회(아이디,이름,성별)
+--조건1. 탈퇴 회원 미포함
+--조건2. 가입일 내림차순
+--[참고] 날짜보다 숫자 비교를 하는 게 더 빠름 -ENROLL_DATE보다 MEMBER_NO로 하는 게 더 빠름
+--(나중에 가입한 회원의 번호가 더 크니까 MEMBER_NO로 해도 상관 없음...)
 SELECT MEMBER_ID, MEMBER_NM , MEMBER_GENDER 
-FROM MEMBER;
+FROM MEMBER
+WHERE SECESSION_FL ='N'
+ORDER BY  MEMBER_NO DESC;
+
+
+SELECT * 
+FROM MEMBER
+WHERE SECESSION_FL ='N'
+ORDER BY ENROLL_DATE DESC;
+
+--3. 회원 정보 수정(이름,성별)
+UPDATE MEMBER
+SET MEMBER_NM = '냐냐2', MEMBER_GENDER ='M'
+WHERE MEMBER_ID = 'user03';
+
+--4. 비밀번호 변경
+UPDATE "MEMBER" 
+SET MEMBER_PW ='새로운비번'
+WHERE MEMBER_ID = 'user03'
+AND MEMBER_PW = '현재 비밀번호';
+
+--5. 회원 탈퇴(SECESSION_FL 컬럼의 값을 'Y'로 변경)
+UPDATE "MEMBER" SET
+SECESSION_FL = 'Y'
+WHERE MEMBER_NO = ?
+AND MEMBER_PW = ?;
 
 SELECT * FROM MEMBER;
 
-UPDATE MEMBER
-SET MEMBER_NM = '냐냐', MEMBER_GENDER ='M'
-WHERE MEMBER_ID = 'user03';
 
 ROLLBACK;
-

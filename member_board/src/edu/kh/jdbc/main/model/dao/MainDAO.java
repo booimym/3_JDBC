@@ -22,7 +22,7 @@ public class MainDAO {
 	private Properties prop = null;
 	//Properties : Map<String,String>으로 제한되어있는 애 & XML 파일을 읽고 /쓰고 특화되어있는 애
 	
-	//기본생성자ㄴ
+	//기본생성자
 	public MainDAO() {
 		
 		try {
@@ -187,46 +187,6 @@ public class MainDAO {
 		return loginMember;
 	}
 
-	public int updateMine(Connection conn, String memberId,String memberName, String memberGender) throws Exception {
-		
-		int result = 0;
-		
-		try {
-			String sql = prop.getProperty("updateMine");
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memberName);
-			pstmt.setString(2, memberGender);
-			pstmt.setString(3, memberId);
-			
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			
-			close(pstmt);
-		}
-		
-		return result;
-	}
-
-	public int updateMine(Connection conn, String memberId, String memberPw1) throws Exception{
-int result = 0;
-		
-		try {
-			String sql = prop.getProperty("updatePw");
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(2, memberId);
-			pstmt.setString(1, memberPw1);
-			
-			
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			
-			close(pstmt);
-		}
-		
-		return result;
-	}
 	
 	
 	

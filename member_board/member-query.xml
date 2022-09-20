@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>member-query.xml</comment>
+<!--목록조회  -->
+<entry key="selectAll">
+SELECT MEMBER_ID, MEMBER_NM , MEMBER_GENDER 
+FROM MEMBER
+WHERE SECESSION_FL ='N'
+ORDER BY  MEMBER_NO DESC
+</entry>
+<!--정보변경  -->
+<entry key ="updateMine">
+UPDATE MEMBER
+SET MEMBER_NM = ?, MEMBER_GENDER =?
+WHERE MEMBER_ID = ?
+</entry>
+<!--비번변경  -->
+<entry key = "updatePw">
+UPDATE "MEMBER" 
+SET MEMBER_PW =?
+WHERE MEMBER_ID = ?
+AND MEMBER_PW = ?
+</entry>
+<!--회원탈퇴  -->
+<entry key = "secession">
+UPDATE "MEMBER" SET
+SECESSION_FL = 'Y'
+WHERE MEMBER_NO = ?
+AND MEMBER_PW = ?
+</entry>
+</properties>

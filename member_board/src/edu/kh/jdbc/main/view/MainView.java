@@ -5,18 +5,22 @@ import java.util.List;
 import java.util.Scanner;
 
 import edu.kh.jdbc.main.model.service.MainService;
+import edu.kh.jdbc.member.view.MemberView;
 import edu.kh.jdbc.member.vo.Member;
 
 //메인 화면
 public class MainView {
-
+	//필드//
 	private Scanner sc = new Scanner(System.in);
 	private MainService service = new MainService();
 	
 	//로그인 된 회원 정보를 저장한 객체를 참조하는 참조변수
-	private Member loginMember = null;
+	public static Member loginMember = null;
 	// -> 로그인x == null
 	// -> 로그인o != null
+	
+	//회원 기능을 담당하는 메뉴 객체를 생성하기.
+	private MemberView memberview = new MemberView();
 	
 	
 	/**
@@ -67,25 +71,8 @@ public class MainView {
 					
 					switch(input) {
 					case 1  : 
-						System.out.println("1. 내정보조회"); //완료
-						System.out.println("2. 회원목록조회"); 
-						System.out.println("3. 내정보수정"); 
-						System.out.println("4. 비번변경"); 
-						System.out.println("5. 회원탈퇴"); //delete구문인가?
-						System.out.print("\n메뉴선택 :");
-						input = sc.nextInt();
-						sc.nextLine(); //입력버퍼에 남아있는 개헹문자 제거하기.
-						System.out.println();
-						switch(input) {
-						case 1  : showMine(); break;
-						case 2  : selectAll(); break;
-						case 3  : updateMine(); break;
-						case 4 : updatePw(); break;
-						default : System.out.println("메뉴에 작성된 번호만 입력해주세요");
-						}
-						
-						
-						break;
+						memberview.memberMenu(loginMember);break;
+						//여기 로그인된 객체를 회원기능으로 전달해줘야 되니까 매개변수로 전달해준다.
 					case 2  :  break;
 					case 0  :  //<참고> 로그인 : loginMember가 참조하는 객체가 존재하면 됨.
 						//		로그아웃 : loginMember가 참조하는 객체를 없애면 됨. null로 만들기.
@@ -119,32 +106,7 @@ public class MainView {
 		
 	}
 	
-
-	
-
-
-
-
-
-
-
-	private void selectAll() {
-		
-		
-		List<Member> memberList = service.selectAll();
-		
-		
-		
-		
-	}
-
-
-
-
-
-
-
-	/** 로그인 화면
+	/** 1. 로그인 화면
 	 * 
 	 */
 	private void login() {
@@ -178,90 +140,10 @@ public class MainView {
 	}
 	
 	
-	private void showMine() {
-		
-		System.out.println(loginMember.toString());
-		
-	}
 	
-	private void updateMine() {
-			
-		String memberName = null;
-		String memberGender = null;
-		
-		//System.out.println(loginMember.getMemberId());
-		
-		try {
-			//1. 로그인한 애의
-			
-			//2. 이름 수정
-			System.out.print("이름 입력 :");
-			memberName = sc.next();
-			//3. 성별 수정
-			while(true) {
-				
-				System.out.print("성별 입력 :");
-				memberGender = sc.next().toUpperCase(); //입력받자마자 대문자로 변경
-						
-				if (memberGender.equals("M")||memberGender.equals("F") ) {
-					break; //일치할 때만 반복 끝.
-				} else {
-					System.out.println("[M또는 F로 입력해주세요]");
-				}
-				System.out.println();
-			}
-			int result = service.updateMine(loginMember.getMemberId(),memberName,memberGender);
-			
-			if (result > 0) {
-				System.out.println("수정되었다.");
-			}
-		
-		
-		} catch(Exception e) {
-		System.out.println("[수정 중 예외 발생]");
-		e.printStackTrace();
-		} 
-	}
-	
-	
-	
-	
-	private void updatePw() {
-		
-		String memberPw1 = null;
-		String memberPw2 = null;
-		
-		try {
-		
-			while(true) {
-				
-				System.out.print("비밀번호 : ");
-				memberPw1 = sc.next();
-				
-				System.out.print("비밀번호 확인 :");
-				memberPw2 = sc.next();
-				
-				//객체(String도 객체임)끼리 비교는 비교연산자 못 쓰고
-				//equals 써야 됨.
-				if(memberPw1.equals(memberPw2) ) { //일치할 경우
-					System.out.println("[일치합니다.]");
-					break; //일치할 때만 반복 끝.
-				} else { //일치하지 않을 경우
-					System.out.println("[비밀번호가 일치하지 않습니다.다시 입력해주세요]");
-					
-				}
-				System.out.println();
-			}
-			
-			int result = service.updatePw(loginMember.getMemberId(),memberPw1);
-	
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
-	 *  회원 가입 화면
+	 *  2. 회원 가입 화면
 	 */
 	//이 안에서만 실행되는 메소드니까 private해도 무방하다!
 	private void signUp(){

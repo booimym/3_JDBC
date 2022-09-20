@@ -25,17 +25,19 @@ AND MEMBER_PW = ?
 AND SECESSION_FL = 'N'
 </entry>
 
+
+<!--회원기능  -->
 <entry key="selectAll">
 SELECT MEMBER_ID, MEMBER_NM , MEMBER_GENDER 
 FROM "MEMBER"
 </entry>
-
+<!--회원기능  -->
 <entry key ="updateMine">
 UPDATE MEMBER
 SET MEMBER_NM = ?, MEMBER_GENDER =?
 WHERE MEMBER_ID = ?
 </entry>
-
+<!--회원기능  -->
 <entry key = "updatePw">
 UPDATE "MEMBER" 
 SET MEMBER_PW = ?
