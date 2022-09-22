@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.kh.jdbc.board.view.BoardView;
 import edu.kh.jdbc.main.model.service.MainService;
 import edu.kh.jdbc.member.view.MemberView;
 import edu.kh.jdbc.member.vo.Member;
@@ -13,6 +14,9 @@ public class MainView {
 	//필드//
 	private Scanner sc = new Scanner(System.in);
 	private MainService service = new MainService();
+	
+	//게시판 기능 메뉴 객체를 생성한다.
+	private BoardView boardView = new BoardView();
 	
 	//로그인 된 회원 정보를 저장한 객체를 참조하는 참조변수
 	public static Member loginMember = null;
@@ -61,6 +65,31 @@ public class MainView {
 					//4. 비번변경(현재비번,새비번,새비번확인)
 					//5. 회원탈퇴
 					System.out.println("2. 게시판 기능");
+					 /* 게시판 기능 (Board View, Service, DAO, board-query.xml)
+					    * 
+					    * 1. 게시글 목록 조회(작성일 내림차순)
+					    *      (게시글 번호, 제목, 작성자명, 작성일, 조회수, 댓글 수)
+					    * 
+					    * 2. 게시글 상세 조회(게시글 번호 입력 받음)
+					    *    (게시글 번호, 제목, 내용, 작성자명, 작성일, 조회수, 
+					    *     댓글 목록(작성일 오름차순 )
+					    *     
+					    *     2-1. 댓글 작성
+					    *     2-2. 댓글 수정 (자신의 댓글만)
+					    *     2-3. 댓글 삭제 (자신의 댓글만)
+					    *     
+					    *     //자신이 작성한 글일 때만 메뉴 노출
+					    *     2-4. 게시글 수정 
+					    *     2-5. 게시글 삭제 
+					    *     
+					    *    
+					    * 
+					    * 3. 게시글 작성(제목, 내용 INSERT) 
+					    *    -> 작성 성공 시 상세 조회 수행
+					    * 
+					    * 4. 게시글 검색(제목, 내용, 제목+내용, 작성자)
+					    * 
+					    * */
 					System.out.println("0. 로그 아웃"); //로그아웃하면 메인메뉴로 간다.
 					System.out.println("99. 프로그램 종료");
 					
@@ -70,10 +99,11 @@ public class MainView {
 					System.out.println();
 					
 					switch(input) {
-					case 1  : 
-						memberview.memberMenu(loginMember);break;
-						//여기 로그인된 객체를 회원기능으로 전달해줘야 되니까 매개변수로 전달해준다.
-					case 2  :  break;
+					case 1  : memberview.memberMenu(loginMember);break;
+							//여기 로그인된 객체를 회원기능으로 전달해줘야 되니까 매개변수로 전달해준다.
+					case 2  : boardView.boardMenu(); break;
+							//loginMember는 static으로 바꿨으니까
+							//회원 정보가 필요한 경우 static으로 사용할 예정임.
 					case 0  :  //<참고> 로그인 : loginMember가 참조하는 객체가 존재하면 됨.
 						//		로그아웃 : loginMember가 참조하는 객체를 없애면 됨. null로 만들기.
 						loginMember = null;
