@@ -34,7 +34,7 @@ public class BoardService {
 		return boardList;
 	}
 
-	/**
+	/**2. 게시글 상세 조회
 	 * @param boardNo
 	 * @param memberNo
 	 * @return board
@@ -62,8 +62,15 @@ public class BoardService {
 				int result = dao.increaseReadCount(conn,boardNo);
 			
 				//트랜잭션 제어
-				if(result>0) commit(conn);
+				if(result>0) {commit(conn);
+				
+				//미리 조회된 board의 조회수를 
+				//증가된 DB의 조회 수와 동일한 값을 가지도록 동기화
+				board.setReadCount(board.getReadCount()+ 1);
+				
+				}
 				else		 rollback(conn);
+				
 			}
 		
 		}

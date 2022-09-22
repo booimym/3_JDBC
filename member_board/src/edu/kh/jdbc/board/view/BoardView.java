@@ -161,7 +161,10 @@ public class BoardView {
 				for(Board b : boardList) {
 					
 				//3 | 샘플제목3[댓글수]|이름|작성일|조회수
-					System.out.printf("%d,%s[%d]|%s|%s|%d\n",
+				System.out.println(" --------------------------------------------------------");	
+					
+					
+					System.out.printf("글 번호 :%d|제목 :%s[댓글수: %d]|작성자: %s|작성일 : %s|조회수 : %d\n",
 							b.getBoardNo(),
 							b.getBoardTitle(),
 							b.getCommentCount(),
