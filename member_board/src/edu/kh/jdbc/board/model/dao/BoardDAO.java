@@ -33,7 +33,7 @@ public class BoardDAO {
 		}
 	}
 
-	/**
+	/**1. 게시글 목록 조회
 	 * @param conn
 	 * @return boardList
 	 */
