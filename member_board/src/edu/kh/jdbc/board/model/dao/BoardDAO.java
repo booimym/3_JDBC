@@ -185,6 +185,125 @@ int result = 0;
 		
 		return result;
 	}
+
+	/**
+	 * @param conn
+	 * @param board
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertBoard(Connection conn, Board board) throws Exception {
+		int result = 0;
+		// 제일 위에다가 결과를 저장하는 변수를 선언하는 이유는
+		// {}안에다가 변수를 선언하면 return 에서 result를 사용 못함.
+		try {		
+		String sql = prop.getProperty("insertBoard");	
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setInt(1,board.getBoardNo()); // 추가
+		pstmt.setString(2,board.getBoardTitle());
+		pstmt.setString(3,board.getBoardContent());
+		pstmt.setInt(4,board.getMemberNo());
+		
+		result = pstmt.executeUpdate();
+		
+		}finally {
+			//무조건 실행되는 부분이니까 반환하는 걸 여기다가 쓴다.
+		
+			close(pstmt);
+			
+		
+		
+		}
+		
+		return result;
+	}
+
+	/** 다음 게시글 번호를 생성하는 DA0
+	 * @param conn
+	 * @return boardNo
+	 * @throws Exception
+	 */
+	public int nextBoardNo(Connection conn) throws Exception{
+		
+		int boardNo = 0;
+		
+		
+		try {
+		
+			String sql = prop.getProperty("nextBoardNo");
+			
+			pstmt=conn.prepareStatement(sql);
+			//?없어도 prepareStatement쓸 수있음. 걍 set안 쓰면 됨.
+			
+			rs = pstmt.executeQuery(); // select니까 query //결과는 1행임.
+			
+			if(rs.next()) {
+				boardNo = rs.getInt(1); //첫번째 컬럼값을 얻어와 boardNo에 저장함.
+			}
+			
+		}finally {
+		 close(rs);
+		 close(pstmt);
+		}
+		
+		
+		return boardNo;
+	}
+
+	/** 게시글 검색 DAO
+	 * @param conn
+	 * @param condition
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Board> searchBoard(Connection conn, int condition, String query) throws Exception {
+		
+		List<Board> boardList = new ArrayList<>();
+		//board 안서도 앞에 써져있으니까 타입을 자동으로 추론한다....
+		
+		try {
+			
+			String sql = prop.getProperty("searchBoard1")
+						+ prop.getProperty("searchBoard2_"+condition)
+						+prop.getProperty("searchBoard3");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, query);
+			
+			//3번 (제목+내용)은  ?가 2개 존재하기 때문에 추가 세팅 구문을 작성해야 된다...
+			if (condition ==3)
+				pstmt.setString(2, query);
+			
+			rs = pstmt.executeQuery();
+			
+			//rs에 담긴 값을 List에 옮겨담기
+			while(rs.next()) {
+			
+				Board board = new Board();
+				board.setBoardNo(rs.getInt("BOARD_NO"));
+				board.setBoardTitle(rs.getString("BOARD_TITLE"));
+				board.setMemberName(rs.getString("MEMBER_NM"));
+				board.setCreateDate(rs.getString("CREATE_DT"));
+				board.setReadCount(rs.getInt("READ_COUNT"));
+				board.setCommentCount(rs.getInt("COMMENT_COUNT"));
+			
+				boardList.add(board);
+			
+			}
+			
+			
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		
+		
+		return boardList;
+	}
 	
 	
 	

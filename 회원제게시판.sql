@@ -387,3 +387,71 @@ BOARD_CONTENT = ?
 WHERE BOARD_NO = ?;
 
 SELECT * FROM BOARD;
+
+
+--게시글 등록(삽입)
+INSERT INTO BOARD (BOARD_NO,BOARD_TITLE,BOARD_CONTENT,MEMBER_NO)
+VALUES (SEQ_BOARD_NO.NEXTVAL,?,?,?)
+--여기에 값 안 넣어진 애들은 DEFAULT로 값이 들어갈 것임.
+
+--다음 게시글 번호 생성
+SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL;
+--삽입서비스 호출하는 애들한테 이 번호들을 하나씩 나눠준다...
+
+-----------------------------------------------------------------------------------------
+
+
+
+
+SELECT BOARD_NO "게시글 번호",BOARD_TITLE "게시글 제목",MEMBER_NM "회원 이름",READ_COUNT "조회수",
+--
+	CASE 
+		WHEN (SYSDATE - CREATE_DT) < 1/24/60
+		THEN FLOOR((SYSDATE - CREATE_DT) * 24 * 60 * 60 )|| '초 전'
+--		
+		WHEN (SYSDATE - CREATE_DT) < 1/24
+		THEN FLOOR((SYSDATE - CREATE_DT) * 24 * 60)|| '분 전'
+--		
+		WHEN (SYSDATE - CREATE_DT) < 1/24
+		THEN FLOOR((SYSDATE - CREATE_DT) * 24)|| '시간 전'
+--	
+		ELSE TO_CHAR(CREATE_DT,'YYYY-MM-DD')
+	END CREATE_DT ,
+--	
+	( SELECT COUNT(*)
+	FROM "COMMENT" C
+	WHERE C.BOARD_NO = B.BOARD_NO) COMMENT_COUNT
+FROM "BOARD" B
+JOIN "MEMBER" USING (MEMBER_NO)
+WHERE DELETE_FL = 'N'
+--제목검색
+--AND BOARD_TITLE LIKE '%'|| ? ||'%'
+--내용 검색
+--AND BOARD_CONTENT LIKE '%'|| ? ||'%'
+--제목 + 내용
+--AND (BOARD_TITLE LIKE '%'|| ? ||'%' OR BOARD_CONTENT LIKE '%'|| ? ||'%')
+--작성자
+AND MEMBER_NM LIKE '%' || ? ||'%'
+ORDER BY BOARD_NO DESC;--최신글부터 조회(CREATE_DT로 해도 되지만 느려지기 때문에 BOARD_NO로 하기 큰 번호일수록 최신글) 
+
+SELECT * FROM BOARD;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

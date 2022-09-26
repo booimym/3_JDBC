@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>main-query.xml</comment>
+
+<entry key ="select">
+SELECT MOVIE_CONTENT
+FROM MOVIE 
+WHERE MOVIE_NM = ?
+</entry>
+
+
+</properties>
