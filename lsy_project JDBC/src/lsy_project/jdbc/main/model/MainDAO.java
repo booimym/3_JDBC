@@ -57,6 +57,7 @@ public class MainDAO {
 				loginMember.setMemberNo(rs.getInt("MEMBER_NO"));
 				loginMember.setMemberId(memberId);
 				loginMember.setMemberPw(memberPw);
+				loginMember.setMemberNm(rs.getString("MEMBER_NM"));
 				loginMember.setEnrollDate(rs.getString("ENROLL_DATE"));
 				
 				
@@ -114,6 +115,48 @@ public class MainDAO {
 			
 		}
 		
+		
+		return result;
+	}
+
+
+	public int updateName(Connection conn, int memberNo,String memberNm) throws Exception{
+		
+		int result = 0;
+		
+		try {
+			
+			String sql = prop.getProperty("updateName");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberNm);
+			pstmt.setInt(2, memberNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	public int updatePassword(Connection conn, int memberNo, String memberPw) throws Exception{
+		
+int result = 0;
+		
+		try {
+			
+			String sql = prop.getProperty("updatePassword");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberPw);
+			pstmt.setInt(2, memberNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
 		
 		return result;
 	}

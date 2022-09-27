@@ -28,7 +28,7 @@ public class BookView {
 				System.out.println("1. 로그인 하기");
 				System.out.println("2. 예매 하기");
 				System.out.println("2. 내 예매 확인");
-				System.out.println("3. 내 예매 수정");
+				System.out.println("3. 내 예매 취소");
 				System.out.println("0. 메인 메뉴로 돌아가기");
 				
 				System.out.print("\n[메뉴를 선택해주세요] :");
@@ -38,7 +38,7 @@ public class BookView {
 				case 1 : memberView.login(); break;
 				case 2 : selectRunningMovie(); break;
 				case 3 : checkBooking();break;
-				case 4 : updateBooking();break;
+				case 4 : cancelBooking();break;
 				case 0 : System.out.println("메인메뉴로 돌아갑니다...");
 				default : System.out.println("올바른 번호를 입력해주세요.");
 				}
@@ -151,64 +151,64 @@ public class BookView {
 			do {
 			
 				System.out.print("영화 번호 선택 :");
-				int input1 = sc.nextInt();
+				int allMoviesNo = sc.nextInt();
 				System.out.println("인원을 선택해주세요(어른/청소년/노약자)");
 				System.out.print("1.어른 : ");
-				int input2 = sc.nextInt();
+				int adultCount = sc.nextInt();
 				System.out.print("2.청소년 : ");
-				int input3 = sc.nextInt();
+				int teenCount = sc.nextInt();
 				System.out.print("3.노약자: ");
-				int input4 = sc.nextInt();
+				int oldCount = sc.nextInt();
 				sc.nextLine();
 				
-				int sum = input2 + input3 + input4;
-				int leftSeat = service.leftSeat(input1); //남은 좌석의 count(*)
-				int checkRating = service.checkRating(input1); //청불의 count(*)
-				int result = 0;//같은 좌석의 count(*)
+				int sum = adultCount + teenCount + oldCount;
+				int leftSeat = service.leftSeat(allMoviesNo); //남은 좌석의 count(*)
+				int checkRating = service.checkRating(allMoviesNo); //청불의 count(*)
+				//int result = 0;//같은 좌석의 count(*)
 				if(sum > leftSeat) {
 					System.out.println("남은 좌석이 부족하여 예매가 불가능합니다.");
 					System.out.println("남은 좌석 :" + leftSeat + "개");
-				}else {
-					if(input3 > 0 && checkRating > 0) {//청불의 count(*)
+				} else {
+						if(teenCount > 0 && checkRating > 0) {//청불의 count(*)
 						System.out.println("청소년은 다음 영화의 예매가 불가능합니다.");
 						
-					}else {
+						} else {
 						
-						System.out.println("좌석 선택하기(1~8 중에 선택해주세요)");
-						
-						for(int i = 1; i <= sum ; i++) {
+							System.out.println("좌석 선택하기(1~8 중에 선택해주세요)");
 							
-							int inputt = -1;
-							do {
-								System.out.print("좌석 : ");
-								int seatNum = sc.nextInt();
+							for(int i = 1; i <= sum ; i++) {
 								
-								result = service.checkSeat(input1,seatNum); //같은 좌석의 count(*)
-								
-								if(result >0) {
-									System.out.println("이미 선택한 좌석입니다.");
-								}else {
-									BookVO book = new BookVO();
-									book.setMemberNo(MemberView.loginMember.getMemberNo());
-									book.setAllMoviesNo(input1);
-									book.setSeatNo(seatNum);
+								int input = -1;
+								do {
+									System.out.print("좌석 : ");
+									int seatNum = sc.nextInt();
 									
-									int resultt = service.booking(book);
+									int result = service.checkSeat(allMoviesNo,seatNum); //같은 좌석의 count(*)
 									
-									if (resultt > 0) {
-									System.out.println("에매되었습니다.");
-									
-									} else {
-										System.out.println("예매 실패");
+									if(result >0) {
+										System.out.println("이미 선택한 좌석입니다.");
+									}else {
+										BookVO book = new BookVO();
+										book.setMemberNo(MemberView.loginMember.getMemberNo());
+										book.setAllMoviesNo(allMoviesNo);
+										book.setSeatNo(seatNum);
+										
+										int result2 = service.booking(book);
+										
+										if (result2 > 0) {
+										System.out.println("에매되었습니다.");
+										
+										} else {
+											System.out.println("예매 실패");
+										}
+										
+										input = 0;
 									}
-									
-									inputt = 0;
-								}
-							}while(inputt != 0);
+								}while(input != 0);
+								
+							}
 							
-						}
-						
-						num = 0;
+							num = 0;
 						
 					}
 				}
@@ -234,15 +234,16 @@ public class BookView {
 		}
 		
 	}
+		
+		
 	
 	
-	
-	private void updateBooking() {
+	private void cancelBooking() {
 		
 		try {
 			
 		}catch(Exception e) {
-			System.out.println("\n<예매 수정 중 예외 발생>\n");
+			System.out.println("\n<예매 취소 중 예외 발생>\n");
 			e.printStackTrace();
 		}
 		

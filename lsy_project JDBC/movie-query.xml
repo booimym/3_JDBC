@@ -2,4 +2,28 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>movie-query.xml</comment>
+
+
+<entry key = "selectAllMovie">
+SELECT MOVIE_NO, MOVIE_TITLE, MOVIE_CONTENT, RUNNING_TIME, MOVIE_YEAR, RATING,COUNTRY
+FROM MOVIE
+</entry>
+
+<entry key = "selectMovie">
+SELECT MOVIE_NO, MOVIE_TITLE, MOVIE_CONTENT, RUNNING_TIME, MOVIE_YEAR, RATING,COUNTRY
+FROM MOVIE
+WHERE MOVIE_TITLE = ?
+</entry> 
+
+<entry key = "selectTop3">
+<![CDATA[
+SELECT MOVIE_TITLE, "예매수"
+FROM (SELECT MOVIE_TITLE,COUNT(*) "예매수"
+	FROM RESERVATION 
+	JOIN TIMETABLE USING (ALL_MOVIES_NO)
+	JOIN MOVIE USING (MOVIE_NO)
+	GROUP BY MOVIE_TITLE
+	ORDER BY "예매수" DESC)
+WHERE ROWNUM <= 3]]>
+</entry>
 </properties>

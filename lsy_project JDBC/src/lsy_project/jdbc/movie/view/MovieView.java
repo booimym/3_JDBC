@@ -30,7 +30,7 @@ public class MovieView {
 			
 			try {
 				
-				System.out.println("[영화 조회하기]");
+				System.out.println("\n[영화 조회하기]\n");
 				System.out.println("1. 영화 전체 목록 조회");
 				System.out.println("2. 영화 상세 조회");
 				System.out.println("3. 예매순 TOP3 조회");
@@ -70,9 +70,11 @@ public class MovieView {
 		
 		for(MovieVO movie : movieList) {
 			
-			System.out.println("-------------------------------------------------------------");
-			System.out.printf("제목 : %4s | 개봉연도 : %d | 상영시간 : %2s | 국가 : %1s | 등급 : %10s",
-					movie.getMovieTitle(),movie.getMovieYear(),movie.getRunningTime(),movie.getRating());
+			System.out.println("\n-----------------------------------------------------------------------------------\n");
+			System.out.printf("제목 : %4s | 개봉연도 : %d | 상영시간 : %2s | 국가 : %1s | 등급 : %s",
+					movie.getMovieTitle(),movie.getMovieYear(),movie.getRunningTime(),movie.getCountry(),movie.getRating());
+		
+			System.out.println();
 		}
 		
 		
@@ -99,7 +101,7 @@ public class MovieView {
 			System.out.println("상영 시간 : " + movieVo.getRunningTime()+"| 등급 : " + movieVo.getRating());
 			System.out.println("===================================");
 			
-			System.out.println("줄거리");
+			System.out.println("[줄거리]");
 			System.out.println();
 			System.out.println(movieVo.getMovieContent());
 			System.out.println();
@@ -115,7 +117,15 @@ public class MovieView {
 		
 		try {
 			
+			List<MovieVO> movieList = service.selectTop3();
 			
+			
+			
+			for(int i = 0 ; i < movieList.size();i++) {
+				
+				System.out.println("["+(i+1)+"위] :" +movieList.get(i).getMovieTitle());
+				
+			}
 			
 		}catch(Exception e) {
 			System.out.println("\n<영화 TOP3 조회 중 예외 발생>\n");

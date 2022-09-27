@@ -104,4 +104,32 @@ public class MovieDAO {
 		return movieVo;
 	}
 
+	public List<MovieVO> selectTop3(Connection conn) throws Exception {
+	
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectTop3");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				MovieVO movie = new MovieVO();
+				movie.setMovieTitle(rs.getString(1));
+				movie.setCount(rs.getInt(2));
+				
+				movieList.add(movie);
+			}
+					
+					
+			
+		}finally {
+			
+		}
+		
+		return movieList;
+	}
+
 }

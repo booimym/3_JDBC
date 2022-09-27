@@ -51,5 +51,35 @@ public class MainService {
 		
 		
 	}
+
+
+	public int updateName(int memberNo, String memberNm) throws Exception {
+		
+		Connection conn =getConnection();
+		
+		int result = dao.updateName(conn,memberNo,memberNm);
+		
+		if(result>0) commit(conn);
+		else		rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+
+	public int updatePassword(int memberNo, String memberPw)throws Exception {
+		
+		Connection conn =getConnection();
+		
+		int result = dao.updatePassword(conn,memberNo,memberPw);
+		
+		if(result>0) commit(conn);
+		else		rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
 	
 }

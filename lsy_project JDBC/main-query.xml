@@ -24,4 +24,16 @@ INSERT INTO "MEMBER"
 VALUES (SEQ_MEMBER_NO.NEXTVAL,?,?,?,DEFAULT,DEFAULT)
 </entry>
 
+<entry key = "updateName">
+UPDATE "MEMBER" 
+SET MEMBER_NM = ?
+WHERE MEMBER_NO = ?
+</entry>
+
+<entry key = "updatePassword">
+UPDATE "MEMBER" 
+SET MEMBER_PW = ?
+WHERE MEMBER_NO = ?
+</entry>
+
 </properties>
