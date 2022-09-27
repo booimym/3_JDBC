@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties> <!-- 속성... 이 안에 저장되는 것들은 다 데이터  -->
+	<comment>driver.xml</comment>
+	
+	<!-- 마크업 언어 주석(인식되지 않는 주석) -->
+	<!-- Ctrl + shift + /  -->
+	
+	<!-- entry는 (key와 value) 한 쌍을 의미한다.  -->
+	<!-- <entry key = "키이름">value</entry>  -->
+	<!-- 경로를 적어 놓은 것  -->
+	<entry key = "driver">oracle.jdbc.driver.OracleDriver</entry>
+	<!-- 연결하기 위한 주소(ip,port번호 등등)  -->
+	<entry key = "url">jdbc:oracle:thin:@localhost:1521:xe</entry>	 
+	<entry key = "user">project_lsy</entry>
+	<entry key = "password">project1234</entry>
+	<!-- connection 생성할 때 쓰는 것들... 띄어쓰기 하면 안됨!! 그러면 띄어쓰기까지 읽어와짐...! 띄어쓰기도 문자로 인식이됨....  -->
+	
+	
+		
+</properties>
