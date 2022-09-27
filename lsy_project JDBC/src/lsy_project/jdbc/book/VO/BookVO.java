@@ -8,8 +8,44 @@ public class BookVO {
 	int allMoviesNo;
 	String theaterNm;
 	String screenNm;
+	int seatNo;
 	String seatNm;
+	String movieTitle;
+	String startTime;
+	int countSeat;
 	
+	public int getSeatNo() {
+		return seatNo;
+	}
+
+	public void setSeatNo(int seatNo) {
+		this.seatNo = seatNo;
+	}
+
+	public int getCountSeat() {
+		return countSeat;
+	}
+
+	public void setCountSeat(int countSeat) {
+		this.countSeat = countSeat;
+	}
+
+	public String getMovieTitle() {
+		return movieTitle;
+	}
+
+	public void setMovieTitle(String movieTitle) {
+		this.movieTitle = movieTitle;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
 	public BookVO() {}
 
 	public int getReservNo() {
