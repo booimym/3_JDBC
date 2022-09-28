@@ -25,6 +25,7 @@ import lsy_project.jdbc.member.model.MemberService;
 					System.out.println("1. 로그인");
 					System.out.println("2. 회원정보 조회");
 					System.out.println("3. 회원정보 수정");
+					System.out.println("4. 로그아웃");
 					System.out.println("0. 메인 메뉴로 돌아가기");
 					System.out.print("\n [메뉴를 선택해주세요] : ");
 					input = sc.nextInt();
@@ -34,6 +35,7 @@ import lsy_project.jdbc.member.model.MemberService;
 					case 1 : login(); break;
 					case 2 : selectMember(); break;
 					case 3 : updateMember(); break;
+					case 4 : logout(); break;
 					case 0 : System.out.println("메인메뉴로 돌아갑니다...");break;
 					default : System.out.println("메뉴에 작성된 번호만 입력해주세요");
 					}
@@ -49,11 +51,26 @@ import lsy_project.jdbc.member.model.MemberService;
 			
 		}
 	
+		private void logout() {
+			
+			if(loginMember != null) {
+				
+				loginMember = null;
+				System.out.println("\n[로그아웃되었습니다.]\n");
+				
+			} else {
+				
+				System.out.println("\n<현재 로그인이 되어있지 않습니다.>\n");
+			}
+			
+		}
+
 		public void login() {
 		
 			
 			int input = -1;
-		do {	
+		do {
+			System.out.println();
 			System.out.println("[로그인을 진행해주세요]");
 			System.out.print("아이디 : ");
 			String memberId = sc.next();
@@ -85,7 +102,9 @@ import lsy_project.jdbc.member.model.MemberService;
 					
 					
 				} else {
-					System.out.println(loginMember.getMemberNm()+"님 환영합니다!");
+					System.out.println();
+					System.out.println("[ "+loginMember.getMemberNm()+" ]님 환영합니다!");
+					System.out.println();
 					input = 0;
 				}
 				

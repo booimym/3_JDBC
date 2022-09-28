@@ -26,15 +26,28 @@ public class BoardService {
 	}
 
 
-	public List<BoardVO> selectAllBoard() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BoardVO> selectAllBoard() throws Exception{
+		
+		Connection conn = getConnection();
+		
+		List<BoardVO> boardList = dao.selectAllBoard(conn);
+		
+		close(conn);
+		
+		return boardList;
 	}
 
 
-	public int insertScore() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertScore(int allMovieNum, Double score) throws Exception{
+		
+		Connection conn = getConnection();
+		
+		int result = dao.insertScore(conn, allMovieNum,score);
+		
+		if (result>0) commit(conn);
+		else 		 rollback(conn);
+		
+		return result;
 	}
 
 }

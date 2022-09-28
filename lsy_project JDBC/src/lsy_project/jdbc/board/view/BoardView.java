@@ -31,10 +31,10 @@ public class BoardView {
 				System.out.println("+++++++++[WELCOME TO HORRO COMMUNITY]+++++++++++");
 				System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++\n");
 				System.out.println();
-				System.out.println("1. 한 줄 후기 작성");
-				System.out.println("2. 한 줄 후기 조회");
-				System.out.println("3. 이벤트 당첨자 확인");
-				System.out.println("0. 로그인 메뉴로 이동");
+				System.out.println("1. 한줄평 작성");
+				System.out.println("2. 한줄평 조회");
+//				System.out.println("3. 이벤트 당첨자 확인");
+				System.out.println("0. 메인 메뉴로 이동");
 				
 				System.out.println();
 				System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -53,7 +53,7 @@ public class BoardView {
 					case 4 : ; break;
 					//검색
 					//제목,내용,제목+내용,작성자
-					case 0 :System.out.println("[로그인 메뉴로 돌아갑니다]"); break;
+					case 0 :System.out.println("[메인 메뉴로 돌아갑니다]"); break;
 					default : System.out.println("메뉴에 작성된 번호만 입력해주세요");
 				}
 				
@@ -115,24 +115,31 @@ public class BoardView {
 					System.out.println("한줄평을 작성해주세요 : ");
 					String content = sc.nextLine();
 					
-					int result = bService.insertBoard(num,MemberView.loginMember.getMemberNo(),content);
 					
 					
-					if (result > 0) {
+					int result1 = bService.insertBoard(num,MemberView.loginMember.getMemberNo(),content);
+					
+					// 별점입력도 같이한 다음에
+					//result1 = 0 나오면, 무결성 위반이니까, 한 영화의 한줄평은 아이디당 1번만 작성가능합니다. 한줄평을 위와 같이 수정하시겠습니까?
+					if (result1 > 0) {
 						System.out.println("[입력 성공!]");
+					} else {
+					
+//						System.out.println("원하시는 영화의 별점을 입력해주세요");
+//						
+//						System.out.print("예매 번호 :");
+//						int AllMovieNum = sc.nextInt();
+//						System.out.print("별점 :");
+//						Double score = sc.nextDouble();
+//						
+//						int result2 = bService.insertScore(AllMovieNum, score);
+//					
+//						if(result2>0) {
+//							System.out.println("[별점이 등록되었습니다.]");
+//						}
+					
 					}
-					
-						System.out.println("원하시는 영화의 별점을 입력해주세요");
-						
-						System.out.print("예매 번호 :");
-						int AllMovieNum = sc.nextInt();
-						System.out.print("별점 :");
-						Double score = sc.nextDouble();
-						
-					int result2 = bService.insertScore();
-					
 				}
-	
 		} catch (Exception e) {
 			System.out.println("<한줄평 작성 중 예외 발생>");
 			e.printStackTrace();
@@ -143,9 +150,9 @@ public class BoardView {
 
 	private void selectAllBoard() {
 		
-		System.out.println("\n+++++++++++++++++++++++++++++++++++++++++++++++++");
-		System.out.println("++++++++++++++++++[한줄평 조회]++++++++++++++++++++");
-		
+		System.out.println("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("+++++++++++++++++++++++++++++++++[한줄평 조회]++++++++++++++++++++++++++++++++++++++++");
+		System.out.println();
 		try {
 		
 			List<BoardVO> boardList = bService.selectAllBoard();
@@ -154,9 +161,12 @@ public class BoardView {
 				System.out.println("\n[게시글이 존재하지 않습니다]\n");
 			}else {
 				
+				System.out.println("|  번호  |  영화 제목  |   아이디   |         한줄평                         ");
 				for(BoardVO b : boardList) {
 					
-					System.out.println("|  영화 제목  |                    한줄평                        | ");
+					System.out.println();
+					System.out.println("    "+b.getBoardNo()+/*"      "+*/"       "+b.getMovieName()+"        "+b.getMemberId()+"      "+b.getBoardContent());
+					System.out.println("------------------------------------------------------------------------");
 				}
 				
 			}

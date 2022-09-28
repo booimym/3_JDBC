@@ -62,8 +62,9 @@ public class BookView {
 		
 		do {
 			try {
-				
+				System.out.println();
 				System.out.println("[상영시간표]");
+				System.out.println();
 				System.out.println("1. 영화별로 조회");
 				System.out.println("2. 지점별로 조회");
 				System.out.println("0. 예매 메뉴로 돌아갑니다");
@@ -96,7 +97,8 @@ public class BookView {
 		
 		int input2 = -1;
 		try {
-			
+				System.out.println();
+				System.out.println("[지점별로 조회하기]");
 				System.out.print("지점 검색 : ");
 				String input = sc.next();
 				
@@ -114,6 +116,12 @@ public class BookView {
 				}
 				
 				do {
+					System.out.println("\n----------------------------------------------------------------------------------------\n");
+					
+					if(bookList.isEmpty()) {
+						System.out.println("\n 현재 상영하는 영화가 없습니다.\n");
+						input2 = 0;
+					}else {
 					System.out.print("\n예매하시겠습니까?(Y/N) :");
 					String yesno = sc.next().toUpperCase();
 					if(yesno.equals("Y")){
@@ -128,6 +136,7 @@ public class BookView {
 					} else {
 						System.out.println("다시 입력해주세요");
 					}
+					}
 				}while(input2 != 0);
 			
 			}catch(Exception e) {
@@ -141,7 +150,8 @@ public class BookView {
 		
 		int input2 = -1;
 		try {
-			
+				System.out.println();
+				System.out.println("[영화별로 조회하기]");
 				System.out.print("제목 검색 : ");
 				String input = sc.next();
 				
@@ -159,6 +169,12 @@ public class BookView {
 				}
 				
 				do {
+					System.out.println("\n----------------------------------------------------------------------------------------\n");
+					
+					if(bookList.isEmpty()) {
+						System.out.println("\n 현재 상영하는 영화가 없습니다.\n");
+						input2 = 0;
+					}else {
 					System.out.print("\n예매하시겠습니까?(Y/N) :");
 					String yesno = sc.next().toUpperCase();
 					if(yesno.equals("Y")){
@@ -172,6 +188,7 @@ public class BookView {
 						input2 = 0;
 					} else {
 						System.out.println("다시 입력해주세요");
+					}
 					}
 				}while(input2 != 0);
 			
@@ -194,9 +211,9 @@ public class BookView {
 			do {
 				System.out.println("\n[예매하기]\n");
 				
-				System.out.print("영화 번호 선택 :");
+				System.out.print("[영화 번호 선택] :");
 				int allMoviesNo = sc.nextInt();
-				System.out.println("인원을 선택해주세요(어른/청소년/노약자)");
+				System.out.println("\n[인원을 선택해주세요(어른/청소년/노약자)]\n");
 				System.out.print("1.어른 : ");
 				int adultCount = sc.nextInt();
 				System.out.print("2.청소년 : ");
@@ -210,11 +227,11 @@ public class BookView {
 				int checkRating = service.checkRating(allMoviesNo); //청불의 count(*)
 				//int result = 0;//같은 좌석의 count(*)
 				if(sum > leftSeat) {
-					System.out.println("남은 좌석이 부족하여 예매가 불가능합니다.");
-					System.out.println("남은 좌석 :" + leftSeat + "개");
+					System.out.println("\n<남은 좌석이 부족하여 예매가 불가능합니다.>\n");
+					System.out.println("(남은 좌석 : " + leftSeat + "개)");
 				} else {
 						if(teenCount > 0 && checkRating > 0) {//청불의 count(*)
-						System.out.println("청소년은 다음 영화의 예매가 불가능합니다.");
+						System.out.println("\n<청소년은 다음 영화의 예매가 불가능합니다.>\n");
 						
 						} else {
 						
@@ -304,7 +321,7 @@ public class BookView {
 			
 			System.out.printf("예매 번호 : %d | 영화 번호 : %d | 영화 제목 : %s | %s | %s | 시간 : %s  | 좌석 : %s ",
 					book.getReservNo(),
-					book.getMemberNo(),book.getMovieTitle(),book.getTheaterNm(),book.getScreenNm(),
+					book.getAllMoviesNo(),book.getMovieTitle(),book.getTheaterNm(),book.getScreenNm(),
 					book.getStartTime(),book.getSeatNm());
 					System.out.println();
 			}
@@ -342,7 +359,7 @@ public class BookView {
 				
 				System.out.printf("예매 번호 : %d | 영화 번호 : %d | 영화 제목 : %s | %s | %s | 시간 : %s  | 좌석 : %s ",
 						book.getReservNo(),
-						book.getMemberNo(),book.getMovieTitle(),book.getTheaterNm(),book.getScreenNm(),
+						book.getAllMoviesNo(),book.getMovieTitle(),book.getTheaterNm(),book.getScreenNm(),
 						book.getStartTime(),book.getSeatNm());
 						System.out.println();
 				}

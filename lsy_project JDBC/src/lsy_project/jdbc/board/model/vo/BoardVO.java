@@ -5,13 +5,27 @@ public class BoardVO {
 	private int boardNo;
 	private int movieNo;
 	private String movieName;
-	private int boardContent;
+	private String boardContent;
 	private int memberNo;
+	private String memberId;
 	private String memberName;
 	private String createDate;
 	
+	
+	
+	
 	public BoardVO() {}
+	
+	
+	public String getMemberId() {
+		return memberId;
+	}
 
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	
 	public int getBoardNo() {
 		return boardNo;
 	}
@@ -36,11 +50,11 @@ public class BoardVO {
 		this.movieName = movieName;
 	}
 
-	public int getBoardContent() {
+	public String getBoardContent() {
 		return boardContent;
 	}
 
-	public void setBoardContent(int boardContent) {
+	public void setBoardContent(String boardContent) {
 		this.boardContent = boardContent;
 	}
 
