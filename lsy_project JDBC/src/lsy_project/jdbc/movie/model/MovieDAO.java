@@ -92,6 +92,7 @@ public class MovieDAO {
 				movieVo.setMovieYear(rs.getInt("MOVIE_YEAR"));
 				movieVo.setRating(rs.getString("RATING"));
 				movieVo.setCountry(rs.getString("COUNTRY"));
+				movieVo.setMovieScore(rs.getDouble("평점"));
 				
 			}
 			
@@ -119,6 +120,34 @@ public class MovieDAO {
 				MovieVO movie = new MovieVO();
 				movie.setMovieTitle(rs.getString(1));
 				movie.setCount(rs.getInt(2));
+				
+				movieList.add(movie);
+			}
+					
+					
+			
+		}finally {
+			
+		}
+		
+		return movieList;
+	}
+
+	public List<MovieVO> selectScoreTop3(Connection conn) throws Exception {
+		
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectScoreTop3");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				
+				MovieVO movie = new MovieVO();
+				movie.setMovieTitle(rs.getString(1));
+				movie.setMovieScore(rs.getDouble(2));
 				
 				movieList.add(movie);
 			}

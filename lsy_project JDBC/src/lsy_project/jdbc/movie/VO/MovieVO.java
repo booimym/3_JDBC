@@ -10,7 +10,16 @@ public class MovieVO {
 	String rating;
 	String country;
 	int count;
+	double movieScore;
 	
+	public double getMovieScore() {
+		return movieScore;
+	}
+
+	public void setMovieScore(double movieScore) {
+		this.movieScore = movieScore;
+	}
+
 	public int getCount() {
 		return count;
 	}

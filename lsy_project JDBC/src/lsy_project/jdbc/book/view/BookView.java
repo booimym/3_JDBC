@@ -27,8 +27,8 @@ public class BookView {
 				System.out.println("\n[예매 화면]\n");
 				System.out.println("1. 로그인 하기");
 				System.out.println("2. 예매 하기");
-				System.out.println("2. 내 예매 확인");
-				System.out.println("3. 내 예매 취소");
+				System.out.println("3. 내 예매 확인");
+				System.out.println("4. 내 예매 취소");
 				System.out.println("0. 메인 메뉴로 돌아가기");
 				
 				System.out.print("\n[메뉴를 선택해주세요] :");
@@ -94,7 +94,7 @@ public class BookView {
 	
 	private void selectByBranch() {
 		
-		 int input2 = -1;
+		int input2 = -1;
 		try {
 			
 				System.out.print("지점 검색 : ");
@@ -139,9 +139,52 @@ public class BookView {
 
 	private void selectByMovie() {
 		
+		int input2 = -1;
+		try {
+			
+				System.out.print("제목 검색 : ");
+				String input = sc.next();
+				
+				List<BookVO> bookList = service.selectByMovie(input);
+				
+				for(BookVO book : bookList) {
+					
+					System.out.println("\n----------------------------------------------------------------------------------------\n");
+					System.out.printf("영화번호 : %2d | 지점 : %10s | 상영관 : %s | 시작시간 : %s ( %d석 남음)",
+							book.getAllMoviesNo(),
+							book.getTheaterNm(),
+							book.getScreenNm(),
+							book.getStartTime(),
+							book.getCountSeat());
+				}
+				
+				do {
+					System.out.print("\n예매하시겠습니까?(Y/N) :");
+					String yesno = sc.next().toUpperCase();
+					if(yesno.equals("Y")){
+						if(MemberView.loginMember == null) {
+							memberView.login();
+						}
+						booking();
+						input2 = 0;
+					} else if (yesno.equals("N")) {
+						System.out.println("예매 메뉴로 돌아갑니다...");
+						input2 = 0;
+					} else {
+						System.out.println("다시 입력해주세요");
+					}
+				}while(input2 != 0);
+			
+			}catch(Exception e) {
+				System.out.println("\n<영화 목록 조회 중 예외 발생>\n");
+				e.printStackTrace();
+			}
 		
 	}
 
+	/**
+	 * 예매하기
+	 */
 	private void booking() {
 		
 		int num = -1;
@@ -149,7 +192,8 @@ public class BookView {
 		try {
 			
 			do {
-			
+				System.out.println("\n[예매하기]\n");
+				
 				System.out.print("영화 번호 선택 :");
 				int allMoviesNo = sc.nextInt();
 				System.out.println("인원을 선택해주세요(어른/청소년/노약자)");
@@ -176,17 +220,17 @@ public class BookView {
 						
 							System.out.println("좌석 선택하기(1~8 중에 선택해주세요)");
 							
-							for(int i = 1; i <= sum ; i++) {
+							for(int i = 0; i < sum ; i++) {
 								
 								int input = -1;
 								do {
 									System.out.print("좌석 : ");
 									int seatNum = sc.nextInt();
-									
+									sc.nextLine();
 									int result = service.checkSeat(allMoviesNo,seatNum); //같은 좌석의 count(*)
 									
 									if(result >0) {
-										System.out.println("이미 선택한 좌석입니다.");
+										System.out.println("이미 예매된 좌석입니다.");
 									}else {
 										BookVO book = new BookVO();
 										book.setMemberNo(MemberView.loginMember.getMemberNo());
@@ -196,7 +240,9 @@ public class BookView {
 										int result2 = service.booking(book);
 										
 										if (result2 > 0) {
-										System.out.println("에매되었습니다.");
+										System.out.println("예매되었습니다.");
+													
+										
 										
 										} else {
 											System.out.println("예매 실패");
@@ -205,8 +251,24 @@ public class BookView {
 										input = 0;
 									}
 								}while(input != 0);
-								
-							}
+							}	
+							
+							int input2 = -1;
+							do {
+								System.out.print("\n예매내역을 확인하시겠습니까?(Y/N) :");
+								String yesno = sc.next().toUpperCase();
+								sc.nextLine();
+								if(yesno.equals("Y")){
+									checkBooking();
+									input2 = 0;
+								} else if (yesno.equals("N")) {
+									System.out.println("예매 메뉴로 돌아갑니다...");
+									input2 = 0;
+								} else {
+									System.out.println("다시 입력해주세요");
+								}
+							}while(input2 != 0);
+							
 							
 							num = 0;
 						
@@ -224,28 +286,102 @@ public class BookView {
 	
 	}
 	
-	private void checkBooking() {
+	/**
+	 * 예매확인
+	 */
+	public void  checkBooking() {
 		
 		try {
+			
+			System.out.println("[예매 확인]");
+			if(MemberView.loginMember == null) {
+				memberView.login();
+			}
+			
+			List<BookVO> bookList = service.checkBooking();
+			
+			for (BookVO book : bookList) {
+			
+			System.out.printf("예매 번호 : %d | 영화 번호 : %d | 영화 제목 : %s | %s | %s | 시간 : %s  | 좌석 : %s ",
+					book.getReservNo(),
+					book.getMemberNo(),book.getMovieTitle(),book.getTheaterNm(),book.getScreenNm(),
+					book.getStartTime(),book.getSeatNm());
+					System.out.println();
+			}
+			
+			if (bookList.isEmpty()) {
+				System.out.println("예매 내역이 존재하지 않습니다.");
+			}
 			
 		}catch(Exception e) {
 			System.out.println("\n<예매 확인 중 예외 발생>\n");
 			e.printStackTrace();
 		}
 		
+		
+		
 	}
-		
-		
 	
-	
+	/**
+	 * 예매취소
+	 */
 	private void cancelBooking() {
+		
 		
 		try {
 			
+			System.out.println("[예매 취소]");
+			if(MemberView.loginMember == null) {
+				memberView.login();
+			}
+			
+			List<BookVO> bookList = service.checkBooking();
+			
+			
+				for (BookVO book : bookList) {
+				
+				System.out.printf("예매 번호 : %d | 영화 번호 : %d | 영화 제목 : %s | %s | %s | 시간 : %s  | 좌석 : %s ",
+						book.getReservNo(),
+						book.getMemberNo(),book.getMovieTitle(),book.getTheaterNm(),book.getScreenNm(),
+						book.getStartTime(),book.getSeatNm());
+						System.out.println();
+				}
+				
+				if (bookList.isEmpty()) {
+					System.out.println("\n[예매 내역이 존재하지 않습니다...]\n");
+				}else {
+			
+					int input = -1;
+					
+					do {
+						System.out.print("\n [취소할 예매 번호 입력] :");
+						int input2 = sc.nextInt();
+						sc.nextLine();
+						int result = service.cancelBooking(input2);
+						if (result > 0) {
+							System.out.println("\n[예매 취소가 완료되었습니다.]\n");
+							System.out.println("\n[계속 취소를 진행하시겠습니까?(Y/N)]\n");
+							String yesno = sc.next().toUpperCase();
+							sc.nextLine();
+							if(yesno.endsWith("N")) {
+								input = 0;
+							}
+							
+							
+						} else { System.out.println("[취소할 예매 번호를 다시 입력해주세요]");}
+						
+					
+					}while(input != 0);
+				}	
 		}catch(Exception e) {
 			System.out.println("\n<예매 취소 중 예외 발생>\n");
 			e.printStackTrace();
 		}
+			
+			
+			
+			
+			
 		
 	}
 

@@ -4,6 +4,7 @@ package lsy_project.jdbc.main.view;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import lsy_project.jdbc.board.view.BoardView;
 import lsy_project.jdbc.book.view.BookView;
 import lsy_project.jdbc.main.model.MainService;
 import lsy_project.jdbc.member.VO.MemberVO;
@@ -21,7 +22,7 @@ public class MainView {
 	
 	private MemberView memberView = new MemberView();
 	
-	
+	private BoardView boardView = new BoardView();
 	
 	public void mainMenu() {
 		
@@ -46,8 +47,8 @@ public class MainView {
 				switch(input) {
 				case 1 : movieView.movieMenu();break;
 				case 2 : bookView.bookMenu(); break;
-				case 3 :
-				case 4 : memberView.login(); break;
+				case 3 : boardView.BoardMenu(); break;
+				case 4 : memberView.memberMenu(); break;
 				case 0 : System.out.println("프로그램 종료"); break;
 				default : System.out.println("메뉴에 작성된 번호만 입력해주세요");
 				}

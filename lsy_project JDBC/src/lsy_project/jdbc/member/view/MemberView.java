@@ -14,79 +14,97 @@ import lsy_project.jdbc.member.model.MemberService;
 		private MainService service = new MainService();
 		private MemberService MeService = new MemberService();
 		
-//		public void memberMenu() {
-//			
-//			int input = -1;
-//			
-//			do {
-//				
-//				try {
-//					
-//					System.out.println("\n[마이페이지]\n");
-//					System.out.println("1. 회원가입");
-//					System.out.println("2. 로그인");
-//					System.out.println("3. 회원정보수정");
-//					
-//					
-//				}catch (InputMismatchException e) {
-//					System.out.println("<입력 형식이 올바르지 않습니다.>");
-//					sc.nextLine();
-//				}
-//				
-//				
-//			}while(input != 0);
-//			
-//			
-//			
-//		}
-	
-		public void login() {
-		
+		public void memberMenu() {
+
+			int input = -1;
 			
-			
-			
-			System.out.println("[로그인을 진행해주세요]");
-			System.out.print("아이디 : ");
-			String memberId = sc.next();
-			System.out.print("비밀번호 : ");
-			String memberPw = sc.next();
-			
-			
-			try {
+			do { 
 				
-				loginMember = service.login(memberId,memberPw);
-				
-				if(loginMember == null) {
-					System.out.println("회원 가입이 되어있지 않은 회원입니다.");
-					System.out.println("회원 가입 화면으로 이동");
-					signUp();
-				}
-				int input = -1;
-				do { 
+				try {
 					System.out.println("\n[마이페이지]\n");
-					System.out.println("1. 회원정보 조회");
-					System.out.println("2. 회원정보 수정");
+					System.out.println("1. 로그인");
+					System.out.println("2. 회원정보 조회");
+					System.out.println("3. 회원정보 수정");
 					System.out.println("0. 메인 메뉴로 돌아가기");
 					System.out.print("\n [메뉴를 선택해주세요] : ");
 					input = sc.nextInt();
 					sc.nextLine();
 					
 					switch(input) {
-					case 1 : selectMember(); break;
-					case 2 : updateMember(); break;
+					case 1 : login(); break;
+					case 2 : selectMember(); break;
+					case 3 : updateMember(); break;
 					case 0 : System.out.println("메인메뉴로 돌아갑니다...");break;
 					default : System.out.println("메뉴에 작성된 번호만 입력해주세요");
 					}
+				}catch(InputMismatchException e) {
+					System.out.println("<입력 형식이 올바르지 않습니다.>");
+					sc.nextLine();
+				}
+					
+			}while(input != 0);
+				
+			
+			
+			
+		}
+	
+		public void login() {
+		
+			
+			int input = -1;
+		do {	
+			System.out.println("[로그인을 진행해주세요]");
+			System.out.print("아이디 : ");
+			String memberId = sc.next();
+			System.out.print("비밀번호 : ");
+			String memberPw = sc.next();
+			sc.nextLine();
+			
+			try {
+				
+				
+				
+				loginMember = service.login(memberId,memberPw);
+				
+				if(loginMember == null) {
+					
+					System.out.println("아이디/비밀번호를 잘못 입력하셨습니다.");
+					
+					System.out.println("회원 가입을 진행한다면 Y를 입력해주세요.(다시 입력은 N)");
+					String yesno = sc.nextLine().toUpperCase();
+					
+					if (yesno.equals("Y")) {
+						System.out.println("회원 가입 화면으로 이동");
+						signUp();
+						
+					} 
 					
 					
-				}while(input != 0);
+					
+					
+					
+				} else {
+					System.out.println(loginMember.getMemberNm()+"님 환영합니다!");
+					input = 0;
+				}
+				
 				
 			} catch(Exception e) {
 				System.out.println("\n<로그인 중 에러 발생>\n");
 				e.printStackTrace();
 			}
+		}while( input != 0);
+		
 		}
+		
+	
+		
 		private void selectMember() {
+			
+			if(MemberView.loginMember == null) {
+				login();
+			}
 			
 			System.out.println("\n[내 정보 조회]\n");
 			System.out.println("회원 번호 : " + loginMember.getMemberNo());
@@ -96,6 +114,10 @@ import lsy_project.jdbc.member.model.MemberService;
 			
 		}
 		private void updateMember() {
+			
+			if(MemberView.loginMember == null) {
+				login();
+			}
 			
 			int input = -1;
 			
@@ -160,6 +182,7 @@ import lsy_project.jdbc.member.model.MemberService;
 			
 				if(result > 0) {
 					System.out.println("[비번 수정 성공]");
+					loginMember.setMemberPw(memberPw);
 				} else {
 					System.out.println("[비번 수정 실패]");
 				}
@@ -179,6 +202,7 @@ import lsy_project.jdbc.member.model.MemberService;
 			
 				if(result > 0) {
 					System.out.println("[이름 수정 성공]");
+					loginMember.setMemberNm(memberName);
 				} else {
 					System.out.println("[이름 수정 실패]");
 				}
@@ -203,7 +227,7 @@ import lsy_project.jdbc.member.model.MemberService;
 					
 						System.out.print("아이디 입력 :");
 						memberId = sc.next();
-						
+						sc.nextLine();
 						int result = service.idDupCheck(memberId);
 						
 						if(result == 0) {
@@ -231,7 +255,7 @@ import lsy_project.jdbc.member.model.MemberService;
 						
 						System.out.print("비밀번호 확인 :");
 						memberPw2 = sc.next();
-						
+						sc.nextLine();
 						
 						if(memberPw1.equals(memberPw2) ) { 
 							System.out.println("[비밀번호 일치]");
@@ -247,7 +271,7 @@ import lsy_project.jdbc.member.model.MemberService;
 					//3. 이름
 					System.out.print("이름 입력 :");
 					memberNm = sc.next();
-					
+					sc.nextLine();
 					MemberVO memberVo = new MemberVO();
 					memberVo.setMemberId(memberId);
 					memberVo.setMemberPw(memberPw2);

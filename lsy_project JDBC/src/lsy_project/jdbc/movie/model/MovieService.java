@@ -49,4 +49,16 @@ public class MovieService {
 		return movieList;
 	}
 
+
+	public List<MovieVO> selectScoreTop3() throws Exception{
+
+		Connection conn = getConnection();
+		
+		List<MovieVO> movieList = dao.selectScoreTop3(conn);
+		
+		close(conn);
+		
+		return movieList;
+	}
+
 }

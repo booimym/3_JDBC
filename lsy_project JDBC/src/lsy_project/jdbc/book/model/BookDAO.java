@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 import lsy_project.jdbc.book.VO.BookVO;
+import lsy_project.jdbc.member.view.MemberView;
 
 public class BookDAO {
 	
@@ -65,6 +66,38 @@ public class BookDAO {
 		
 		return bookList;
 	}
+	
+	public List<BookVO> selectByMovie(Connection conn, String input) throws Exception {
+		
+		List<BookVO> bookList = new ArrayList<>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectByMovie");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, input);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				BookVO book = new BookVO();
+				book.setAllMoviesNo(rs.getInt("ALL_MOVIES_NO"));
+				book.setTheaterNm(rs.getString("THEATER_NM"));;
+				book.setScreenNm(rs.getString("SCREEN_NAME"));
+				book.setStartTime(rs.getString("상영시간"));
+				book.setCountSeat(rs.getInt("남은 좌석 개수"));
+				
+				bookList.add(book);
+			}
+			
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return bookList;
+		
+	}
 
 	public int checkRating(Connection conn, int input1) throws Exception{
 		
@@ -87,6 +120,9 @@ public class BookDAO {
 		
 		return result;
 	}
+	
+	
+	
 
 	public int leftSeat(Connection conn, int input1) throws Exception{
 		
@@ -155,6 +191,67 @@ public class BookDAO {
 		
 		return result;
 	}
+
+	public List<BookVO> checkBooking(Connection conn) throws Exception {
+		
+		
+		List<BookVO> bookList = new ArrayList<>();
+		
+		try {
+			
+			
+			
+			String sql = prop.getProperty("checkBooking");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, MemberView.loginMember.getMemberId());
+			pstmt.setString(2, MemberView.loginMember.getMemberPw());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				BookVO book = new BookVO();
+				book.setReservNo(rs.getInt("RESERV_NO"));
+				book.setAllMoviesNo(rs.getInt("ALL_MOVIES_NO"));
+				book.setTheaterNm(rs.getString("THEATER_NM"));;
+				book.setScreenNm(rs.getString("SCREEN_NAME"));
+				book.setMovieTitle(rs.getString("MOVIE_TITLE"));
+				book.setStartTime(rs.getString("상영시간"));
+				book.setSeatNm(rs.getString("SEAT_NAME"));
+				
+				bookList.add(book);
+				
+				
+			}
+		}finally {
+			
+			close(pstmt);
+		}
+		
+		return bookList;
+	}
+
+	public int cancleBooking(Connection conn, int input2) throws Exception {
+		
+		int result = -1;
+		
+		try {
+		String sql = prop.getProperty("deleteBooking");
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, MemberView.loginMember.getMemberId());
+		pstmt.setString(2, MemberView.loginMember.getMemberPw());
+		pstmt.setInt(3, input2);
+		
+		result = pstmt.executeUpdate();
+		
+		}finally {
+			
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
 
 	
 	

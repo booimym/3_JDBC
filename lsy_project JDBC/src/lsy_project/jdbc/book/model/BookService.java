@@ -26,6 +26,17 @@ public class BookService {
 		
 		return movieList;
 	}
+	
+	public List<BookVO> selectByMovie(String input) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		List<BookVO> movieList = dao.selectByMovie(conn,input);
+		
+		close(conn);
+		
+		return movieList;
+	}
 
 	public int leftSeat(int input1) throws Exception{
 		
@@ -74,6 +85,34 @@ public class BookService {
 		
 		return result;
 	}
+
+	public List<BookVO> checkBooking() throws Exception{
+		
+		Connection conn = getConnection();
+		List<BookVO> bookList = dao.checkBooking(conn);
+		
+		close(conn);
+		
+		
+		
+		return bookList;
+	}
+
+	public int cancelBooking(int input2) throws Exception{
+		
+		Connection conn = getConnection();
+		
+		int result = dao.cancleBooking(conn, input2);
+		
+		if(result>0) commit(conn);
+		else		rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	
 
 	
 
